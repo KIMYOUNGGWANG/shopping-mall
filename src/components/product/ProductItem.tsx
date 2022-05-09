@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { IProductItem } from "../../@types/ProductItem";
 
@@ -9,15 +10,17 @@ const ProductItem = ({
   price,
   image,
   description,
+  id,
 }: IProductItem) => {
   return (
     <ProductItems>
-      <p> {category}</p>
-      <p>{title}</p>
-      <p>{description}</p>
-      <img src={image} />
-      <span>${price}</span>
-      <span>{rating.rate}</span>
+      <Link to={`/products/${id}`}>
+        <p> {category}</p>
+        <p>{title}</p>
+        <img src={image} />
+        <span>${price}</span>
+        <span>{rating.rate}</span>
+      </Link>
     </ProductItems>
   );
 };
@@ -29,5 +32,7 @@ const ProductItems = styled.li`
   padding: 10px;
   img {
     width: 100%;
+    height: 300px;
+    object-fit: contain;
   }
 `;

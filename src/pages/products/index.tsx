@@ -2,8 +2,8 @@ import React from "react";
 import { useQuery } from "react-query";
 import { IProductItem } from "../../@types/ProductItem";
 import { fetcher, QueryKeys } from "../../queryClient";
-import ProductItem from "../components/ProductItem";
 import styled from "styled-components";
+import ProductItem from "../../components/product/ProductItem";
 const ProductList = () => {
   const { data } = useQuery<IProductItem[]>([QueryKeys.PRODUCTS], () =>
     fetcher({
@@ -14,8 +14,9 @@ const ProductList = () => {
 
   return (
     <div>
+      <h2>상품목록</h2>
       <Products>
-        {data?.map(product => (
+        {data?.map((product) => (
           <ProductItem {...product} key={product.id} />
         ))}
       </Products>

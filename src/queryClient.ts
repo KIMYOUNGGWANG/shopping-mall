@@ -17,7 +17,18 @@ interface Ifetcher {
 export const getClient = (() => {
   let client: QueryClient | null = null;
   return () => {
-    if (!client) client = new QueryClient();
+    if (!client)
+      client = new QueryClient({
+        defaultOptions: {
+          queries: {
+            cacheTime: 1000 * 60 * 60 * 24,
+            staleTime: 1000 * 60,
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+          },
+        },
+      });
     return client;
   };
 })();
@@ -28,9 +39,9 @@ export const QueryKeys = {
 
 const SERVER_URL = "https://fakestoreapi.com";
 
-export const fetcher = async ({ method, path, body }: Ifetcher) => {
+export const fetcher = async ({ method, path, body, params }: Ifetcher) => {
   try {
-    const url = `${SERVER_URL}${path}`;
+    let url = `${SERVER_URL}${path}`;
     const fetchOptions: RequestInit = {
       method,
       headers: {
@@ -38,6 +49,13 @@ export const fetcher = async ({ method, path, body }: Ifetcher) => {
         "Access-Control-Allow-Origin": SERVER_URL,
       },
     };
+
+    if (params) {
+      const searchParams = new URLSearchParams(params);
+      url += "?" + searchParams.toString();
+    }
+
+    if (body) fetchOptions.body = JSON.stringify(body);
     const res = await fetch(url, body);
     const json = await res.json();
     return json;
