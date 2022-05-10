@@ -2,24 +2,23 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { IProductItem } from "../../@types/ProductItem";
+import { PRODUCT } from "../../graphql/products";
 
 const ProductItem = ({
-  category,
   title,
-  rating,
   price,
-  image,
+  imageUrl,
   description,
+  createdAt,
   id,
-}: IProductItem) => {
+}: PRODUCT) => {
   return (
     <ProductItems>
       <Link to={`/products/${id}`}>
-        <p> {category}</p>
-        <p>{title}</p>
-        <img src={image} />
+        <p> {title}</p>
+        <img src={imageUrl} />
         <span>${price}</span>
-        <span>{rating.rate}</span>
+        <span>{createdAt}</span>
       </Link>
     </ProductItems>
   );

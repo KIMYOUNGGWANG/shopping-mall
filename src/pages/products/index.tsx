@@ -1,22 +1,19 @@
 import React from "react";
 import { useQuery } from "react-query";
 import { IProductItem } from "../../@types/ProductItem";
-import { fetcher, QueryKeys } from "../../queryClient";
+import { fetcher, graphqlFetcher, QueryKeys } from "../../queryClient";
 import styled from "styled-components";
 import ProductItem from "../../components/product/ProductItem";
+import { GET_PRODUCTS, PRODUCT } from "../../graphql/products";
 const ProductList = () => {
-  const { data } = useQuery<IProductItem[]>([QueryKeys.PRODUCTS], () =>
-    fetcher({
-      method: "GET",
-      path: "/products",
-    })
+  const { data } = useQuery<PRODUCT[]>([QueryKeys.PRODUCTS], () =>
+    graphqlFetcher(GET_PRODUCTS)
   );
-
   return (
     <div>
       <h2>상품목록</h2>
       <Products>
-        {data?.map((product) => (
+        {data?.products?.map((product: PRODUCT) => (
           <ProductItem {...product} key={product.id} />
         ))}
       </Products>

@@ -1,27 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 import { IProductItem } from "../../@types/ProductItem";
+import { PRODUCT } from "../../graphql/products";
 
 const ProductDetail = ({
-  item: {
-    category,
-    title,
-    image,
-    price,
-    description,
-    rating: { rate },
-  },
+  item: { title, imageUrl, price, description },
 }: {
-  item: IProductItem;
+  item: PRODUCT;
 }) => {
   return (
     <ProductDetailContainer>
-      <p> {category}</p>
       <p>{title}</p>
-      <img src={image} />
+      <img src={imageUrl} />
       <p>{description}</p>
       <span>${price}</span>
-      <span>{rate}</span>
     </ProductDetailContainer>
   );
 };

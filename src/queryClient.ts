@@ -1,3 +1,4 @@
+import request, { RequestDocument } from "graphql-request";
 import {
   useQuery,
   useMutation,
@@ -37,7 +38,8 @@ export const QueryKeys = {
   PRODUCTS: "PRODUCTS",
 };
 
-const SERVER_URL = "https://fakestoreapi.com";
+const SERVER_URL = "/";
+// const SERVER_URL = "https://fakestoreapi.com";
 
 export const fetcher = async ({ method, path, body, params }: Ifetcher) => {
   try {
@@ -63,3 +65,6 @@ export const fetcher = async ({ method, path, body, params }: Ifetcher) => {
     console.error(e);
   }
 };
+
+export const graphqlFetcher = (query: RequestDocument, variables = {}) =>
+  request(SERVER_URL, query, variables);
