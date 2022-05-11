@@ -36,6 +36,7 @@ export const getClient = (() => {
 
 export const QueryKeys = {
   PRODUCTS: "PRODUCTS",
+  CART: "CART",
 };
 
 const SERVER_URL = "/";
