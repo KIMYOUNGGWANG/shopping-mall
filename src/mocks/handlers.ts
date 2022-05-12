@@ -2,7 +2,7 @@ import { graphql } from "msw";
 import { QueryKeys } from "../queryClient";
 import { v4 as uuid } from "uuid";
 import { GET_PRODUCT, GET_PRODUCTS } from "../graphql/products";
-import { ADD_CART, CART, GET_CART } from "../graphql/cart";
+import { ADD_CART, CART, GET_CART, UPDATE_CART } from "../graphql/cart";
 
 const mock_products = (() =>
   Array.from({ length: 20 }).map((_, i) => ({
@@ -50,6 +50,20 @@ export const handlers = [
         };
       }
     }
+    cartData = newData;
+    return res(ctx.data(newData));
+  }),
+
+  graphql.mutation(UPDATE_CART, (req, res, ctx) => {
+    const newData = { ...cartData };
+    const { id, amount } = req.variables;
+    if (!newData[id]) {
+      throw new Error("없는 데이터입니다.");
+    }
+    newData[id] = {
+      ...newData[id],
+      amount,
+    };
     cartData = newData;
     return res(ctx.data(newData));
   }),
