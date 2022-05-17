@@ -1,10 +1,18 @@
-import React, { SyntheticEvent } from "react";
+import React, {
+  ForwardedRef,
+  forwardRef,
+  RefObject,
+  SyntheticEvent,
+} from "react";
 import { useMutation } from "react-query";
 import styled from "styled-components";
 import { CART, DELETE_CART, UPDATE_CART } from "../../graphql/cart";
 import { getClient, graphqlFetcher, QueryKeys } from "../../queryClient";
 
-const CartItem = ({ id, title, price, amount, imageUrl }: CART) => {
+const CartItem = (
+  { id, title, price, amount, imageUrl }: CART,
+  ref: ForwardedRef<HTMLInputElement>
+) => {
   const queryClient = getClient();
   const { mutate: updateCart } = useMutation(
     ({ id, amount }: { id: string; amount: number }) =>
@@ -43,6 +51,7 @@ const CartItem = ({ id, title, price, amount, imageUrl }: CART) => {
   );
   const handleUpdateAmount = (e: SyntheticEvent) => {
     const amount = Number((e.target as HTMLInputElement).value);
+    if (amount < 1) return;
     updateCart({ id, amount });
   };
 
@@ -52,20 +61,30 @@ const CartItem = ({ id, title, price, amount, imageUrl }: CART) => {
   return (
     <CartListItemWrapper>
       <label>
-        <input type="checkbox" />
+        <input
+          type="checkbox"
+          name={`select-item`}
+          className={"cart_item_checkbox"}
+          ref={ref}
+        />
         선택
       </label>
       <p>상품명 : {title}</p>
       <img src={imageUrl} />
       <p>가격 : {price}</p>
-      <input type="number" value={amount} onChange={handleUpdateAmount} />
+      <input
+        type="number"
+        value={amount}
+        onChange={handleUpdateAmount}
+        min={1}
+      />
       <button type="button" onClick={handleDeleteItem}>
         삭제
       </button>
     </CartListItemWrapper>
   );
 };
-export default CartItem;
+export default forwardRef(CartItem);
 
 const CartListItemWrapper = styled.li`
   border: 1px solid #999999;
