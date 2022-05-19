@@ -11,7 +11,6 @@ const Cart = () => {
   });
   const cartItem = Object.values(data || {}) as CART[];
   if (!cartItem.length) return <div>장바구니가 비었어요.</div>;
-  console.log(cartItem);
   return <CartList items={cartItem} />;
 };
 

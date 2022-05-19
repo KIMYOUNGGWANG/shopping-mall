@@ -20,7 +20,6 @@ const ProductItem = ({
   const { mutate: addCart, data } = useMutation((id: string) =>
     graphqlFetcher(ADD_CART, { id })
   );
-  console.log();
   const [cartAmount, setCartAmount] = useRecoilState(useCartItem(id));
   const addToCart = () => {
     setCartAmount((prev) => (prev || 0) + 1);
